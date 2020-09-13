@@ -1,10 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import RootRouter from "./navigation/rootRoute";
 
-export default function App() {
-  return <RootRouter />;
+export default function Tasks({ navigation }) {
+  return (
+    <View style={styles.container}>
+      <Text>Tasks Screen</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
