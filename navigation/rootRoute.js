@@ -4,7 +4,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import Catogorys from "../screens/Catogorys";
-import Tasks from "../screens/Tasks";
+import AllTasks from "../screens/AllTasks";
+import PendingTasks from "../screens/PendingTasks";
+import FinishedTasks from "../screens/FinishedTasks";
 import Colors from "../constants/colors";
 
 const Tab = createMaterialTopTabNavigator();
@@ -17,9 +19,9 @@ const Tabs = () => (
       indicatorStyle: { backgroundColor: "black", top: "100%" },
     }}
   >
-    <Tab.Screen name="all" component={Tasks} />
-    <Tab.Screen name="pending" component={Tasks} />
-    <Tab.Screen name="finished" component={Tasks} />
+    <Tab.Screen name="all" component={AllTasks} />
+    <Tab.Screen name="pending" component={PendingTasks} />
+    <Tab.Screen name="finished" component={FinishedTasks} />
   </Tab.Navigator>
 );
 
