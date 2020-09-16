@@ -2,8 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import Catogorys from "../screens/Catogorys";
+import CatogorysHelp from "../screens/CatogorysHelp";
 import AllTasks from "../screens/AllTasks";
 import PendingTasks from "../screens/PendingTasks";
 import FinishedTasks from "../screens/FinishedTasks";
@@ -33,8 +35,27 @@ export default () => (
         headerStyle: { backgroundColor: Colors.primaryColor },
       }}
     >
-      <HomeStack.Screen name="Catogorys" component={Catogorys} />
+      <HomeStack.Screen
+        name="Catogorys"
+        component={Catogorys}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <MaterialIcons
+              name="help"
+              color="black"
+              size={25}
+              style={{ marginRight: 10 }}
+              onPress={() => navigation.navigate("CatogoryHelp")}
+            />
+          ),
+        })}
+      />
       <HomeStack.Screen name="Tasks" component={Tabs} />
+      <HomeStack.Screen
+        name="CatogoryHelp"
+        component={CatogorysHelp}
+        options={{ title: "Help" }}
+      />
     </HomeStack.Navigator>
   </NavigationContainer>
 );

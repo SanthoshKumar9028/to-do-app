@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
+  RefreshControl,
 } from "react-native";
 
 import DataSource from "../dataSource";
@@ -21,6 +22,7 @@ export default function Catogorys({ navigation }) {
   let [hasError, setHasError] = useState(false);
   let [data, setData] = useState([]);
   let [isModelVisible, setIsModelVisible] = useState(false);
+  let [isRefreshing, setIsRefreshing] = useState(false);
 
   async function retriveData() {
     setIsLoading(true);
@@ -123,6 +125,14 @@ export default function Catogorys({ navigation }) {
             onInfoPress={() => console.log(item.name)}
           />
         )}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={() => {
+              retriveData().then(() => setIsRefreshing(false));
+            }}
+          />
+        }
       />
     );
 

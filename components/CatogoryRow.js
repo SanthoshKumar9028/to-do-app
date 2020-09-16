@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   cardText: {
     left: 5,
     fontSize: 18,
+    marginBottom: 10,
   },
   cardButtons: {
     flexDirection: "row-reverse",
