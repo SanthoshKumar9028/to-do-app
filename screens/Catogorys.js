@@ -16,12 +16,15 @@ import CatogoryRow from "../components/CatogoryRow";
 import { MaterialIcons } from "@expo/vector-icons";
 import InputModel from "../components/InputModel";
 import FabButton from "../components/buttons/FabButton";
+import InfoModal from "../components/InfoModal";
 
 export default function Catogorys({ navigation }) {
   let [isLoading, setIsLoading] = useState(true);
   let [hasError, setHasError] = useState(false);
   let [data, setData] = useState([]);
-  let [isModelVisible, setIsModelVisible] = useState(false);
+  let [isInputModelVisible, setIsInputModelVisible] = useState(false);
+  let [isInfoModelVisible, setIsInfoModelVisible] = useState(false);
+  let [currentInfo, setCurrentInfo] = useState({});
   let [isRefreshing, setIsRefreshing] = useState(false);
 
   async function retriveData() {
@@ -104,9 +107,26 @@ export default function Catogorys({ navigation }) {
       />
     );
   else if (hasError)
-    content = <Text style={styles.textIndicator}>Something went wrong</Text>;
+    content = (
+      <View style={styles.errorContainer}>
+        <Text style={[styles.textIndicator, styles.bold]}>
+          Something went wrong
+        </Text>
+        <MaterialIcons
+          name="refresh"
+          style={styles.reloadIcon}
+          color="white"
+          size={30}
+          onPress={retriveData}
+        />
+      </View>
+    );
   else if (data && data.length < 1)
-    content = <Text style={styles.textIndicator}>EMPTY</Text>;
+    content = (
+      <View style={styles.errorContainer}>
+        <Text style={[styles.textIndicator, styles.bold]}>Empty</Text>
+      </View>
+    );
   else if (data instanceof Array)
     content = (
       <FlatList
@@ -122,7 +142,10 @@ export default function Catogorys({ navigation }) {
               })
             }
             onDeletePress={() => deleteCatogory(item.id)}
-            onInfoPress={() => console.log(item.name)}
+            onInfoPress={() => {
+              setIsInfoModelVisible(true);
+              setCurrentInfo(item);
+            }}
           />
         )}
         refreshControl={
@@ -141,16 +164,35 @@ export default function Catogorys({ navigation }) {
       {content}
       <InputModel
         title="ADD CATOGORY"
-        visible={isModelVisible}
-        setVisible={setIsModelVisible}
+        visible={isInputModelVisible}
+        setVisible={setIsInputModelVisible}
         submitResult={addCatogory}
       />
+      <InfoModal
+        visible={isInfoModelVisible}
+        setVisible={setIsInfoModelVisible}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.infoContent}>
+          <View>
+            <Text style={[styles.bold, styles.CatoProp]}>Name:</Text>
+            <Text style={[styles.bold, styles.CatoProp]}>Type:</Text>
+            <Text style={styles.bold}>Added Date:</Text>
+          </View>
+          <View>
+            <Text style={styles.CatoProp}> {currentInfo.name}</Text>
+            <Text style={styles.CatoProp}> CATOGORY</Text>
+            <Text>{new Date(currentInfo.addedDate).toLocaleDateString()}</Text>
+          </View>
+        </View>
+      </InfoModal>
       <FabButton>
         <MaterialIcons
           color="white"
           name="add"
           size={30}
-          onPress={() => setIsModelVisible(true)}
+          onPress={() => setIsInputModelVisible(true)}
         />
       </FabButton>
       <StatusBar style="auto" />
@@ -164,9 +206,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "stretch",
   },
+  errorContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
   textIndicator: {
-    textAlign: "center",
     fontSize: 20,
+    marginBottom: 20,
+  },
+  reloadIcon: { backgroundColor: "black", padding: 10, borderRadius: 25 },
+  infoContent: {
+    flexDirection: "row",
+    backgroundColor: "gray",
+    height: "35%",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  bold: {
     fontWeight: "bold",
+  },
+  CatoProp: {
+    marginBottom: 20,
   },
 });
