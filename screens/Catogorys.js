@@ -137,7 +137,7 @@ export default function Catogorys({ navigation }) {
             item={item}
             onPress={() =>
               navigation.navigate("Tasks", {
-                screen: "all",
+                screen: "pending",
                 params: { currentCatogory: item.name },
               })
             }
