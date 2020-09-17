@@ -6,7 +6,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import Catogorys from "../screens/Catogorys";
 import CatogorysHelp from "../screens/CatogorysHelp";
-import AllTasks from "../screens/AllTasks";
 import PendingTasks from "../screens/PendingTasks";
 import FinishedTasks from "../screens/FinishedTasks";
 import Colors from "../constants/colors";
@@ -21,7 +20,6 @@ const Tabs = () => (
       indicatorStyle: { backgroundColor: "black", top: "100%" },
     }}
   >
-    <Tab.Screen name="all" component={AllTasks} />
     <Tab.Screen name="pending" component={PendingTasks} />
     <Tab.Screen name="finished" component={FinishedTasks} />
   </Tab.Navigator>
