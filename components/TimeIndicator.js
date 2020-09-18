@@ -11,11 +11,7 @@ export default function Timer({ dateObject, ...rest }) {
   } else if (diffMis < oneMinutes * 60) {
     return <Text {...rest}>few mins ago</Text>;
   } else if (diffMis < oneMinutes * 60 * 60) {
-    return (
-      <Text {...rest}>
-        {dateObject.getHours() + ":" + dateObject.getMinutes()}
-      </Text>
-    );
+    return <Text {...rest}>{dateObject.getHours() + " hrs ago"}</Text>;
   } else {
     return (
       <Text {...rest}>
