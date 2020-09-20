@@ -34,7 +34,6 @@ export default function AllTasks({ navigation, route }) {
       let tasks = await DataSource.get(currentCatogory);
       setData(JSON.parse(tasks || "[]"));
     } catch (error) {
-      console.log(error);
       setHasError(true);
     } finally {
       setIsLoading(false);
@@ -160,8 +159,9 @@ export default function AllTasks({ navigation, route }) {
         visible={isInputModelVisible}
         setVisible={setIsInputModelVisible}
         submitResult={addTask}
+        inputProps={{ multiline: true }}
       />
-      <FabButton>
+      <FabButton style={{ backgroundColor: "#444" }}>
         <MaterialIcons
           color="white"
           name="add"

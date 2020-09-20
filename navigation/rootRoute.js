@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -9,7 +9,6 @@ import Catogorys from "../screens/Catogorys";
 import CatogorysHelp from "../screens/CatogorysHelp";
 import PendingTasks from "../screens/PendingTasks";
 import FinishedTasks from "../screens/FinishedTasks";
-import About from "../screens/About";
 import Colors from "../constants/colors";
 
 const Tab = createMaterialTopTabNavigator();
@@ -40,22 +39,13 @@ export default () => (
         component={Catogorys}
         options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <MaterialIcons
-                name="info"
-                color="black"
-                size={25}
-                style={{ marginRight: 10 }}
-                onPress={() => navigation.navigate("About")}
-              />
-              <MaterialIcons
-                name="help"
-                color="black"
-                size={25}
-                style={{ marginRight: 10 }}
-                onPress={() => navigation.navigate("CatogoryHelp")}
-              />
-            </View>
+            <MaterialIcons
+              name="help"
+              color="black"
+              size={25}
+              style={styles.icon}
+              onPress={() => navigation.navigate("CatogoryHelp")}
+            />
           ),
         })}
       />
@@ -65,11 +55,11 @@ export default () => (
         component={CatogorysHelp}
         options={{ title: "Help" }}
       />
-      <HomeStack.Screen
-        name="About"
-        component={About}
-        options={{ title: "About" }}
-      />
     </HomeStack.Navigator>
   </NavigationContainer>
 );
+
+const styles = StyleSheet.create({
+  iconContainer: { flexDirection: "row" },
+  icon: { marginRight: 10 },
+});

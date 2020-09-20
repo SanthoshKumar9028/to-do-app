@@ -7,11 +7,11 @@ export default function ({ children, style }) {
 
 const styles = StyleSheet.create({
   fab: {
-    padding: 10,
+    padding: 15,
     bottom: 25,
     right: 25,
     position: "absolute",
     backgroundColor: "blue",
-    borderRadius: 25,
+    borderRadius: 30,
   },
 });

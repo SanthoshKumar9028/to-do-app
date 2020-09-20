@@ -9,11 +9,11 @@ import {
   Alert,
   RefreshControl,
 } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import DataSource from "../dataSource";
 import Colors from "../constants/colors";
 import CatogoryRow from "../components/CatogoryRow";
-import { MaterialIcons } from "@expo/vector-icons";
 import InputModel from "../components/InputModel";
 import FabButton from "../components/buttons/FabButton";
 import InfoModal from "../components/InfoModal";
@@ -33,7 +33,6 @@ export default function Catogorys({ navigation }) {
       let catogorys = await DataSource.get("catogorys");
       setData(JSON.parse(catogorys || "[]"));
     } catch (error) {
-      console.log(error);
       setHasError(true);
     } finally {
       setIsLoading(false);
@@ -41,26 +40,37 @@ export default function Catogorys({ navigation }) {
   }
 
   async function deleteCatogory(id) {
-    try {
-      setIsLoading(true);
-      let catogorys = await DataSource.get("catogorys");
-      catogorys = JSON.parse(catogorys || "[]");
-      let toRemoveIndex = catogorys.findIndex((catogory) => catogory.id == id);
-      if (toRemoveIndex != -1) {
-        await DataSource.delete(catogorys[toRemoveIndex].name);
+    let toRemoveIndex = data.findIndex((catogory) => catogory.id == id);
+    if (toRemoveIndex === -1) return;
+
+    const removeHandler = async () => {
+      try {
+        setIsLoading(true);
+        await DataSource.delete(data[toRemoveIndex].name);
         await DataSource.add(
           "catogorys",
-          JSON.stringify(catogorys.filter((_, i) => i != toRemoveIndex))
+          JSON.stringify(data.filter((_, i) => i != toRemoveIndex))
         );
         retriveData();
+      } catch (error) {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      setHasError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+    };
 
+    Alert.alert(
+      "Confirm",
+      `Are you sure to remove the ${data[toRemoveIndex].name} catogory`,
+      [
+        { text: "CANCEL" },
+        {
+          text: "OK",
+          onPress: removeHandler,
+        },
+      ]
+    );
+  }
   async function addCatogory(name) {
     setIsLoading(true);
     try {
@@ -73,19 +83,17 @@ export default function Catogorys({ navigation }) {
             { text: "OK" },
           ]);
         });
-      } else {
-        let newCatogory = {
-          id: `catogory_${Date.now()}`,
-          name,
-          addedDate: new Date().toUTCString(),
-        };
-        console.log(newCatogory);
-        catogorys.push(newCatogory);
-        await DataSource.add("catogorys", JSON.stringify(catogorys));
-        retriveData();
+        return;
       }
+      let newCatogory = {
+        id: `catogory_${Date.now()}`,
+        name,
+        addedDate: new Date().toUTCString(),
+      };
+      catogorys.push(newCatogory);
+      await DataSource.add("catogorys", JSON.stringify(catogorys));
+      retriveData();
     } catch (error) {
-      console.log(error);
       setHasError(true);
     } finally {
       setIsLoading(false);
@@ -163,7 +171,7 @@ export default function Catogorys({ navigation }) {
     <View style={styles.container}>
       {content}
       <InputModel
-        title="ADD CATOGORY"
+        title="ADD NEW CATOGORY"
         visible={isInputModelVisible}
         setVisible={setIsInputModelVisible}
         submitResult={addCatogory}
@@ -172,7 +180,7 @@ export default function Catogorys({ navigation }) {
         visible={isInfoModelVisible}
         setVisible={setIsInfoModelVisible}
         transparent={true}
-        animationType="fade"
+        animationType="slide"
       >
         <View style={styles.infoContent}>
           <View>
@@ -214,7 +222,7 @@ const styles = StyleSheet.create({
   reloadIcon: { backgroundColor: "black", padding: 10, borderRadius: 25 },
   infoContent: {
     flexDirection: "row",
-    backgroundColor: "gray",
+    backgroundColor: "skyblue",
     height: "35%",
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "to-do-app",
-    "slug": "to-do-app",
+    "name": "ToDoApp",
+    "slug": "todoapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,6 +21,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "description": "To make easy to remember the things we need to do",
+    "android": {
+      "package": "com.santhoshkumar9028.todoapp"
     }
   }
 }
