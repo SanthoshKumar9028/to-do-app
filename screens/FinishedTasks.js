@@ -8,12 +8,12 @@ import {
   FlatList,
   RefreshControl,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import DataSource from "../dataSource";
 import Colors from "../constants/colors";
 import CardView from "../components/custom-view/CardView";
+import { ErrorIndicator, EmptyIndicator } from "../components/CustomIndicators";
 
 export default function FinishedTasks({ navigation }) {
   let [isLoading, setIsLoading] = useState(true);
@@ -49,27 +49,8 @@ export default function FinishedTasks({ navigation }) {
         color={Colors.primaryColor}
       />
     );
-  else if (hasError)
-    content = (
-      <View style={styles.errorContainer}>
-        <Text style={[styles.textIndicator, styles.bold]}>
-          Something went wrong
-        </Text>
-        <MaterialIcons
-          name="refresh"
-          style={styles.reloadIcon}
-          color="white"
-          size={30}
-          onPress={retriveData}
-        />
-      </View>
-    );
-  else if (data && data.length < 1)
-    content = (
-      <View style={styles.errorContainer}>
-        <Text style={[styles.textIndicator, styles.bold]}>Empty</Text>
-      </View>
-    );
+  else if (hasError) content = <ErrorIndicator handler={retriveData} />;
+  else if (data && data.length < 1) content = <EmptyIndicator />;
   else if (data instanceof Array)
     content = (
       <FlatList
@@ -111,14 +92,5 @@ const styles = StyleSheet.create({
   },
   cardText: {
     fontSize: 16,
-  },
-  errorContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
-  textIndicator: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  reloadIcon: { backgroundColor: "black", padding: 10, borderRadius: 25 },
-  bold: {
-    fontWeight: "bold",
   },
 });

@@ -18,6 +18,7 @@ import CardView from "../components/custom-view/CardView";
 import InputModel from "../components/InputModel";
 import FabButton from "../components/buttons/FabButton";
 import TimeIndicator from "../components/TimeIndicator";
+import { ErrorIndicator, EmptyIndicator } from "../components/CustomIndicators";
 
 export default function AllTasks({ navigation, route }) {
   let [isLoading, setIsLoading] = useState(true);
@@ -91,27 +92,9 @@ export default function AllTasks({ navigation, route }) {
         color={Colors.primaryColor}
       />
     );
-  else if (hasError)
-    content = (
-      <View style={styles.errorContainer}>
-        <Text style={[styles.textIndicator, styles.bold]}>
-          Something went wrong
-        </Text>
-        <MaterialIcons
-          name="refresh"
-          style={styles.reloadIcon}
-          color="white"
-          size={30}
-          onPress={retriveData}
-        />
-      </View>
-    );
+  else if (hasError) content = <ErrorIndicator handler={retriveData} />;
   else if (data.length < 1 || data.every((task) => task.finished))
-    content = (
-      <View style={styles.errorContainer}>
-        <Text style={[styles.textIndicator, styles.bold]}>Empty</Text>
-      </View>
-    );
+    content = <EmptyIndicator />;
   else if (data instanceof Array)
     content = (
       <FlatList
@@ -189,12 +172,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   timer: { alignSelf: "flex-end", paddingRight: 10 },
-  errorContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
-  textIndicator: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-  reloadIcon: { backgroundColor: "black", padding: 10, borderRadius: 25 },
   markFinishedIconContainer: {
     marginTop: 10,
     paddingVertical: 5,
@@ -202,7 +179,4 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   markFinishedIcon: { textAlign: "center", color: "green" },
-  bold: {
-    fontWeight: "bold",
-  },
 });
